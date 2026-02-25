@@ -368,7 +368,7 @@ html[data-theme="dark"] .btn-outline {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 900;
+  z-index: 1000;
   padding: 24px 0;
   transition: padding 0.4s var(--ease), background 0.4s var(--ease),
     box-shadow 0.4s var(--ease);
@@ -992,10 +992,22 @@ html[data-theme="dark"] .nav-btn {
       #C8C8C8 100%);
   position: relative;
   z-index: 3;
-  /* Very subtle surface texture */
-  box-shadow:
-    inset -8px -8px 16px rgba(0, 0, 0, 0.08),
-    inset 4px 4px 10px rgba(255, 255, 255, 0.9);
+  /* Half moon shadow overlay */
+  overflow: hidden;
+}
+
+.moon-core::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  box-shadow: inset 20px 0 40px rgba(0, 0, 0, 1);
+  border-radius: 50%;
+  transform: translateX(var(--shadow-x, 100%));
+  transition: transform 0.1s linear;
 }
 
 /* Glow rings */
@@ -1563,27 +1575,30 @@ html[data-theme="dark"] .nav-btn {
     border-radius: 14px;
   }
 
-  /* Clients — fall back to normal scroll on mobile */
+  /* Clients & Services — enabled horizontal scroll on mobile */
   .clients-outer {
-    height: auto;
+    height: 300vh;
   }
 
   .clients-sticky {
-    position: relative;
-    height: auto;
-    padding: var(--sec) 0;
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding: 60px 0 80px;
   }
 
   .clients-viewport {
-    overflow-x: auto;
+    overflow: hidden;
   }
 
   .clients-track {
-    transform: none !important;
+    display: flex;
+    gap: 20px;
+    padding: 20px var(--cpad);
   }
 
   .clients-progress {
-    display: none;
+    display: block;
   }
 
   /* Moon */
@@ -1667,7 +1682,7 @@ button,
   align-items: center;
   justify-content: center;
   box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
-  z-index: 950;
+  z-index: 1050;
   transition: all 0.4s var(--ease-spring);
 }
 

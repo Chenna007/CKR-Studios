@@ -248,7 +248,6 @@ function initHorizontalScroll() {
 
   configs.forEach(conf => {
     if (!conf.outer || !conf.track) return;
-    if (window.matchMedia('(max-width: 720px)').matches) return;
 
     function update() {
       const outerRect = conf.outer.getBoundingClientRect();
@@ -257,6 +256,11 @@ function initHorizontalScroll() {
       const scrolled = -outerRect.top;
       const scrollable = outerH - viewH;
       const pct = clamp(scrolled / scrollable, 0, 1);
+
+      // On mobile, we make it "little scroll" by dampening the pct or using a different multiplier
+      // but the requirement "make little scroll" might mean just enabled it enough to be felt.
+      // We'll use the standard logic but ensure it's responsive.
+
       const trackW = conf.track.scrollWidth;
       const viewportW = conf.track.parentElement.offsetWidth;
       const maxShift = trackW - viewportW + parseInt(getComputedStyle(conf.track).paddingLeft) * 2;
@@ -272,6 +276,28 @@ function initHorizontalScroll() {
     window.addEventListener('resize', update);
     update();
   });
+}
+
+function initMoonEffect() {
+  const moon = document.getElementById('moon');
+  const moonCore = document.querySelector('.moon-core');
+  if (!moon || !moonCore) return;
+
+  function update() {
+    const rect = moon.getBoundingClientRect();
+    const viewH = window.innerHeight;
+
+    // Calculate how far through the moon section we are
+    // 0 = just entered bottom, 1 = leaving top
+    const pct = invLerp(viewH, -rect.height, rect.top);
+
+    // Map pct to moon phase (100% = full, 50% = half)
+    const shadowX = mapRange(pct, 0, 0.6, 100, 50);
+    moonCore.style.setProperty('--shadow-x', `${shadowX}%`);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
 }
 
 
@@ -495,6 +521,7 @@ function initCursor() {
     initNavbar();
     initMobileMenu();
     initStars();
+    initMoonEffect();
     initHorizontalScroll();
     initScrollReveal();
     initCounters();
