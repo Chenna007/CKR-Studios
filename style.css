@@ -1,0 +1,1755 @@
+/* ==========================================================
+   CKRStudios — style.css  (Cinematic Edition)
+   ==========================================================
+
+   THE CONCEPT:
+   The page is a visual story — morning, transition, night,
+   transition back to morning. The background color is
+   controlled by JavaScript as the user scrolls.
+   Text, icons, and cards adapt automatically via CSS variables.
+
+   TABLE OF CONTENTS
+   01. CSS Variables — The adaptive system
+   02. Reset & Base
+   03. Typography — Cormorant + Outfit
+   04. Fixed Background & Grain
+   05. Buttons
+   06. Navbar
+   07. Hero Section
+   08. Services Section
+   09. Clients Horizontal Scroll
+   10. Moon Section
+   11. Process Section
+   12. Contact Section
+   13. Footer
+   14. Reveal Animations
+   15. Responsive
+   ========================================================== */
+
+
+/* ==========================================================
+   01. CSS VARIABLES — Adaptive system
+   ✏️ HOW TO CHANGE COLORS:
+      Edit --accent to change the gold/warm accent color.
+      The full day/night system is handled by JavaScript —
+      see script.js colorStops[] array.
+   ========================================================== */
+:root {
+  /* Adaptive text — JS sets these via data-theme on <html> */
+  --fg: #111111;
+  /* Primary text */
+  --fg-2: #444444;
+  /* Secondary text */
+  --fg-3: #777777;
+  /* Muted text */
+  --fg-inv: rgba(255, 255, 255, 0.95);
+  /* Inverted (for dark bg) */
+
+  /* Accent - Silicon Valley Orange */
+  --accent: #FF6B00;
+  /* Vibrant Orange */
+  --accent-dim: rgba(255, 107, 0, 0.1);
+  --accent-glow: rgba(255, 107, 0, 0.4);
+
+  /* Surface colors — adapt to bg */
+  --card: rgba(0, 0, 0, 0.03);
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-dark: rgba(255, 255, 255, 0.08);
+  --card-dark-border: rgba(255, 255, 255, 0.12);
+
+  /* Rule / divider */
+  --rule: rgba(0, 0, 0, 0.08);
+  --rule-dark: rgba(255, 255, 255, 0.1);
+
+  /* Fonts - Plus Jakarta Sans */
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  /* Spacing */
+  --sec: clamp(100px, 15vw, 180px);
+  --cmax: 1200px;
+  --cpad: clamp(24px, 6vw, 80px);
+
+  /* Easing */
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --t: 0.4s;
+}
+
+/* Theme applied by JS when bg is dark */
+html[data-theme="dark"] {
+  --fg: rgba(255, 255, 255, 0.92);
+  --fg-2: rgba(255, 255, 255, 0.55);
+  --fg-3: rgba(255, 255, 255, 0.3);
+  --card: var(--card-dark);
+  --card-border: var(--card-dark-border);
+  --rule: var(--rule-dark);
+}
+
+
+/* ==========================================================
+   02. RESET & BASE
+   ========================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  background: transparent;
+  /* Background is the fixed #cinematic-bg div */
+  color: var(--fg);
+  transition: color 0.4s var(--ease);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+
+/* ==========================================================
+   03. TYPOGRAPHY
+   ========================================================== */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+/* Italic serif accent inside headings */
+em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+
+/* Section label — small uppercase tag above headings */
+.section-label {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Section title */
+.section-title {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.03em;
+}
+
+/* Container */
+.container {
+  max-width: var(--cmax);
+  margin: 0 auto;
+  padding: 0 var(--cpad);
+}
+
+.section {
+  padding: var(--sec) 0;
+}
+
+
+/* ==========================================================
+   04. FIXED BACKGROUND & GRAIN
+   The #cinematic-bg div sits behind everything.
+   JavaScript updates its background-color on scroll.
+   ========================================================== */
+#cinematic-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-color: #ffffff;
+  transition: background-color 0.08s linear;
+  will-change: background-color;
+}
+
+/* Film grain overlay for cinematic texture */
+#grain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  animation: grainAnimate 0.4s steps(2) infinite;
+}
+
+@keyframes grainAnimate {
+  0% {
+    background-position: 0px 0px;
+  }
+
+  25% {
+    background-position: -40px 20px;
+  }
+
+  50% {
+    background-position: 50px -30px;
+  }
+
+  75% {
+    background-position: -20px 40px;
+  }
+
+  100% {
+    background-position: 0px 0px;
+  }
+}
+
+
+/* ==========================================================
+   05. BUTTONS
+   ========================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 16px 36px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all var(--t) var(--ease);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Shimmer sweep */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.14) 50%, transparent 62%);
+  transform: translateX(-100%);
+  transition: transform 0.55s var(--ease);
+}
+
+.btn:hover::after {
+  transform: translateX(100%);
+}
+
+/* Solid (orange) button */
+.btn-solid {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+html[data-theme="dark"] .btn-solid {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.btn-solid:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px var(--accent-glow);
+  background: #ff7b1a;
+}
+
+.btn-solid:active {
+  transform: translateY(-1px);
+}
+
+/* Outline button */
+.btn-outline {
+  background: transparent;
+  color: var(--fg);
+  border: 2px solid var(--rule);
+}
+
+html[data-theme="dark"] .btn-outline {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-3px);
+  background: var(--accent-dim);
+}
+
+/* Submit button loading state */
+#submitBtn .btn-spin {
+  display: none;
+}
+
+#submitBtn .btn-arr {
+  transition: transform var(--t) var(--ease-spring);
+}
+
+#submitBtn:hover .btn-arr {
+  transform: translateX(3px);
+}
+
+#submitBtn.loading .btn-txt,
+#submitBtn.loading .btn-arr {
+  display: none;
+}
+
+#submitBtn.loading .btn-spin {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ==========================================================
+   06. NAVBAR
+   ========================================================== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  padding: 24px 0;
+  transition: padding 0.4s var(--ease), background 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+
+.nav.scrolled {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 4px 24px rgba(0, 0, 0, 0.06);
+  padding: 16px 0;
+}
+
+/* Dark nav when in night zone */
+html[data-theme="dark"] .nav:not(.scrolled) {
+  background: transparent;
+}
+
+html[data-theme="dark"] .nav.scrolled {
+  background: rgba(8, 8, 8, 0.88);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.nav-inner {
+  max-width: var(--cmax);
+  margin: 0 auto;
+  padding: 0 var(--cpad);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Logo */
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  transition: opacity var(--t);
+}
+
+.logo-mark {
+  font-weight: 300;
+  color: var(--accent);
+}
+
+.logo:hover {
+  opacity: 0.7;
+}
+
+/* Nav links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.nav-a {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--fg-2);
+  padding: 8px 16px;
+  border-radius: 50px;
+  transition: all var(--t) var(--ease);
+  letter-spacing: 0.01em;
+}
+
+.nav-a:hover {
+  color: var(--fg);
+  background: var(--card);
+}
+
+/* Nav CTA */
+.nav-btn {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--fg);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 50px;
+  transition: all var(--t) var(--ease);
+  letter-spacing: 0.02em;
+}
+
+html[data-theme="dark"] .nav-btn {
+  background: rgba(255, 255, 255, 0.88);
+  color: #111;
+}
+
+.nav-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Burger */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  width: 40px;
+  height: 40px;
+  gap: 6px;
+  border-radius: 8px;
+  transition: background var(--t);
+}
+
+.burger:hover {
+  background: var(--card);
+}
+
+.burger span {
+  display: block;
+  height: 1.5px;
+  background: var(--fg);
+  border-radius: 2px;
+  transition: all 0.38s var(--ease);
+  transform-origin: right;
+}
+
+.burger span:first-child {
+  width: 20px;
+}
+
+.burger span:last-child {
+  width: 14px;
+}
+
+.burger.open span:first-child {
+  transform: rotate(-45deg) scaleX(1);
+  width: 20px;
+}
+
+.burger.open span:last-child {
+  transform: rotate(45deg) scaleX(0.7) translateX(-5px) translateY(-1px);
+  width: 20px;
+}
+
+
+/* ==========================================================
+   07. HERO SECTION — Morning
+   ========================================================== */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 130px var(--cpad) 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-inner {
+  max-width: 860px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Location eyebrow */
+.hero-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 2.5rem;
+}
+
+.loc-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: locBlink 2.5s ease-in-out infinite;
+}
+
+@keyframes locBlink {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.35;
+    transform: scale(0.6);
+  }
+}
+
+/* Hero headline — large cinematic serif */
+.hero-headline {
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin-bottom: 2rem;
+  color: var(--fg);
+}
+
+.hero-line {
+  display: block;
+}
+
+/* Subtext */
+.hero-sub {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  color: var(--fg-2);
+  line-height: 1.7;
+  max-width: 480px;
+  font-weight: 300;
+  margin-bottom: 2.5rem;
+}
+
+/* Button row */
+.hero-btns {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Decorative orbs */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: orbFloat 10s ease-in-out infinite alternate;
+  will-change: transform;
+  z-index: 0;
+}
+
+.hero-orb-1 {
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(200, 150, 90, 0.06) 0%, transparent 70%);
+  right: -150px;
+  top: -100px;
+  animation-duration: 14s;
+}
+
+.hero-orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(200, 150, 90, 0.04) 0%, transparent 70%);
+  right: 10%;
+  bottom: 5%;
+  animation-duration: 18s;
+  animation-delay: -4s;
+}
+
+@keyframes orbFloat {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(-40px) rotate(8deg);
+  }
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 44px;
+  right: var(--cpad);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.scroll-hint span {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  writing-mode: vertical-rl;
+}
+
+.scroll-hint-line {
+  width: 1px;
+  height: 52px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: scrollDrop 2s ease-in-out infinite;
+}
+
+@keyframes scrollDrop {
+  0% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+    opacity: 0;
+  }
+}
+
+
+/* ==========================================================
+   08. SERVICES SECTION
+   ========================================================== */
+/* Services section is now using .clients-outer structure */
+#services .clients-header {
+  text-align: left;
+}
+
+.svc {
+  background: var(--card);
+  padding: clamp(28px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background var(--t) var(--ease);
+}
+
+.svc:hover {
+  background: var(--accent-dim);
+  z-index: 1;
+}
+
+.svc-icon {
+  width: 42px;
+  height: 42px;
+  color: var(--accent);
+  margin-bottom: 1.75rem;
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.svc:hover .svc-icon {
+  transform: scale(1.12) rotate(-5deg);
+}
+
+.svc-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.svc-num {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--fg-3);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-body);
+}
+
+.svc-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin-bottom: 0.75rem;
+  transition: color var(--t);
+}
+
+.svc:hover .svc-name {
+  color: var(--accent);
+}
+
+.svc-desc {
+  font-size: 0.875rem;
+  color: var(--fg-2);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+
+/* ==========================================================
+   09. CLIENTS — Horizontal Scroll
+   The .clients-outer div is tall to give scroll room.
+   .clients-sticky is position: sticky.
+   JS moves .clients-track horizontally based on scroll.
+   ========================================================== */
+
+/* Height determines how much scroll room the section gets */
+.clients-outer {
+  height: 380vh;
+  position: relative;
+}
+
+.clients-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 0 80px;
+}
+
+/* Section header above the cards */
+.clients-header {
+  padding: 0 var(--cpad);
+  max-width: var(--cmax);
+  margin: 0 auto var(--cpad);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.clients-header .section-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+/* Scrolling viewport */
+.clients-viewport {
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* The track — JS sets transform: translateX() */
+.clients-track {
+  display: flex;
+  gap: clamp(18px, 2.5vw, 28px);
+  padding: 20px var(--cpad) 30px;
+  will-change: transform;
+  transition: transform 0.05s linear;
+  /* Very slight smoothing */
+}
+
+/* Individual client card */
+.client-card {
+  flex-shrink: 0;
+  width: clamp(280px, 32vw, 380px);
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: clamp(26px, 3.5vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: transform 0.35s var(--ease-spring), background var(--t);
+  cursor: default;
+}
+
+.client-card:hover {
+  transform: translateY(-8px);
+  background: var(--accent-dim);
+  border-color: rgba(200, 150, 90, 0.25);
+}
+
+/* Avatar circle */
+.client-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: hsl(calc(var(--hue) * 1deg), 55%, 62%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.client-avatar::after {
+  content: attr(data-initials);
+}
+
+/* Stars */
+.client-stars {
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+/* Review quote */
+.client-review {
+  font-size: 0.925rem;
+  line-height: 1.7;
+  color: var(--fg-2);
+  font-weight: 300;
+  flex: 1;
+  margin-bottom: 1.75rem;
+  font-style: italic;
+  font-family: var(--font-display);
+}
+
+.client-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+  margin-bottom: 3px;
+}
+
+.client-role {
+  font-size: 0.78rem;
+  color: var(--fg-3);
+  font-weight: 400;
+}
+
+/* Progress bar at bottom */
+.clients-progress {
+  height: 1px;
+  background: var(--card-border);
+  margin: 0 var(--cpad);
+  max-width: calc(var(--cmax) - var(--cpad) * 2);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 24px;
+  border-radius: 1px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.clients-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.05s linear;
+  border-radius: 1px;
+}
+
+
+/* ==========================================================
+   10. MOON SECTION — Night
+   ========================================================== */
+.moon-section {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.moon-scene {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: var(--sec) var(--cpad);
+  position: relative;
+}
+
+/* Star field */
+.stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: starTwinkle var(--dur, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+}
+
+@keyframes starTwinkle {
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  50% {
+    opacity: var(--peak-opacity, 0.6);
+    transform: scale(1);
+  }
+}
+
+/* Moon wrapper — JS animates floating */
+.moon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  margin-bottom: clamp(50px, 8vw, 90px);
+  animation: moonFloat 7s ease-in-out infinite;
+}
+
+@keyframes moonFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-22px);
+  }
+}
+
+/* The actual moon orb */
+.moon-core {
+  width: clamp(140px, 18vw, 220px);
+  height: clamp(140px, 18vw, 220px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%,
+      #FFFFFF 0%,
+      #F4F4F4 40%,
+      #DEDEDE 75%,
+      #C8C8C8 100%);
+  position: relative;
+  z-index: 3;
+  /* Very subtle surface texture */
+  box-shadow:
+    inset -8px -8px 16px rgba(0, 0, 0, 0.08),
+    inset 4px 4px 10px rgba(255, 255, 255, 0.9);
+}
+
+/* Glow rings */
+.moon-glow-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.moon-glow-1 {
+  width: calc(clamp(140px, 18vw, 220px) + 60px);
+  height: calc(clamp(140px, 18vw, 220px) + 60px);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+  animation: glowPulse1 4s ease-in-out infinite;
+  z-index: 2;
+}
+
+.moon-glow-2 {
+  width: calc(clamp(140px, 18vw, 220px) + 130px);
+  height: calc(clamp(140px, 18vw, 220px) + 130px);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: glowPulse2 6s ease-in-out infinite;
+  z-index: 1;
+}
+
+.moon-glow-3 {
+  width: calc(clamp(140px, 18vw, 220px) + 260px);
+  height: calc(clamp(140px, 18vw, 220px) + 260px);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+  animation: glowPulse1 8s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes glowPulse1 {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 0.7;
+  }
+}
+
+@keyframes glowPulse2 {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.12);
+    opacity: 0.5;
+  }
+}
+
+/* Moon text */
+.moon-content {
+  text-align: center;
+  position: relative;
+  z-index: 4;
+}
+
+.moon-headline {
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 1.25rem;
+  line-height: 1.05;
+}
+
+.moon-headline em {
+  color: var(--accent);
+}
+
+.moon-label {
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.75rem;
+}
+
+.moon-sub {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+
+/* ==========================================================
+   11. PROCESS SECTION
+   ========================================================== */
+.process .section-label {
+  display: block;
+}
+
+.process-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--card-border);
+  margin-top: clamp(50px, 7vw, 80px);
+}
+
+.process-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  align-items: center;
+  gap: 32px;
+  padding: clamp(22px, 3.5vw, 36px) 0;
+  border-bottom: 1px solid var(--card-border);
+  transition: all var(--t) var(--ease);
+}
+
+.process-item:hover {
+  padding-left: 12px;
+  border-bottom-color: var(--accent);
+}
+
+.pi-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--fg-3);
+  transition: color var(--t);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.process-item:hover .pi-num {
+  color: var(--accent);
+}
+
+.pi-content h4 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: -0.025em;
+  margin-bottom: 5px;
+}
+
+.pi-content p {
+  font-size: 0.875rem;
+  color: var(--fg-2);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+
+/* ==========================================================
+   12. CONTACT SECTION — Sunrise
+   ========================================================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(50px, 8vw, 110px);
+  align-items: start;
+}
+
+.contact-left .section-title {
+  text-align: left;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.contact-sub {
+  font-size: 1rem;
+  color: var(--fg-2);
+  line-height: 1.75;
+  font-weight: 300;
+  max-width: 380px;
+  margin-top: 0.75rem;
+}
+
+.contact-details {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: transform var(--t) var(--ease);
+}
+
+.contact-detail:hover {
+  transform: translateX(5px);
+}
+
+.cd-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.cd-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 2px;
+}
+
+.cd-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.cd-link:hover {
+  color: var(--accent);
+}
+
+/* Contact form */
+.form {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: clamp(28px, 4.5vw, 50px);
+}
+
+.form-field {
+  margin-bottom: 22px;
+}
+
+.form-field label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 8px;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--card-border);
+  padding: 12px 0;
+  font-size: 0.9rem;
+  color: var(--fg);
+  transition: border-color var(--t);
+  outline: none;
+  font-weight: 400;
+  border-radius: 0;
+  appearance: none;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: var(--fg-3);
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-bottom-color: var(--accent);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.form-note {
+  font-size: 0.72rem;
+  color: var(--fg-3);
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* Form success */
+.form-success {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.success-mark {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(200, 150, 90, 0.1);
+  border: 1.5px solid rgba(200, 150, 90, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--accent);
+  margin: 0 auto 1.2rem;
+  animation: successIn 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes successIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.form-success h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--fg);
+}
+
+.form-success p {
+  font-size: 0.875rem;
+  color: var(--fg-2);
+}
+
+
+/* ==========================================================
+   13. FOOTER
+   ========================================================== */
+.footer {
+  border-top: 1px solid var(--card-border);
+  padding: 64px 0 28px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr;
+  gap: clamp(40px, 6vw, 80px);
+  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.footer-brand p {
+  font-size: 0.875rem;
+  color: var(--fg-2);
+  margin-top: 14px;
+  line-height: 1.7;
+  font-weight: 300;
+  max-width: 230px;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.fc h5 {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 1.1rem;
+}
+
+.fc a {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--fg-2);
+  padding: 4px 0;
+  transition: color var(--t), transform var(--t);
+  font-weight: 300;
+}
+
+.fc a:hover {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer-bottom p {
+  font-size: 0.78rem;
+  color: var(--fg-3);
+  font-weight: 300;
+}
+
+
+/* ==========================================================
+   14. REVEAL ANIMATIONS
+   ========================================================== */
+
+/* Fade in */
+.reveal-fade {
+  opacity: 0;
+  animation: fadeIn 0.9s var(--ease) both;
+  animation-delay: var(--rd, 0s);
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide up + fade */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(32px);
+  animation: slideUp 0.9s var(--ease) both;
+  animation-delay: var(--rd, 0s);
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll-triggered reveals (JS adds .in class) */
+.reveal-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+  transition-delay: var(--rd, 0s);
+}
+
+.reveal-scroll.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ==========================================================
+   15. RESPONSIVE — Tablet & Mobile
+   ========================================================== */
+.hide-mobile {
+  display: block;
+}
+
+/* Tablet ≤ 960px */
+@media (max-width: 960px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+  }
+
+  .process-item {
+    grid-template-columns: 60px 1fr;
+  }
+}
+
+/* Mobile ≤ 720px */
+@media (max-width: 720px) {
+  .hide-mobile {
+    display: none;
+  }
+
+  /* Mobile nav */
+  .burger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.97);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transform: translateY(-100%);
+    transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+    z-index: 800;
+    backdrop-filter: blur(20px);
+  }
+
+  html[data-theme="dark"] .nav-links {
+    background: rgba(6, 6, 6, 0.97);
+  }
+
+  .nav-links.open {
+    transform: translateY(0);
+  }
+
+  .nav-a {
+    font-size: 1.4rem;
+    font-weight: 600;
+    padding: 14px 30px;
+    color: var(--fg);
+  }
+
+  .nav-btn {
+    display: none;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 100px var(--cpad) 80px;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-headline {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    line-height: 1.1;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-btns {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero-btns .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .scroll-hint {
+    bottom: 30px;
+    right: 20px;
+    opacity: 0.6;
+    transform: scale(0.8);
+  }
+
+  .hero-orb {
+    opacity: 0.3;
+  }
+
+  /* Services */
+  .services-grid {
+    grid-template-columns: 1fr;
+    border-radius: 14px;
+  }
+
+  /* Clients — fall back to normal scroll on mobile */
+  .clients-outer {
+    height: auto;
+  }
+
+  .clients-sticky {
+    position: relative;
+    height: auto;
+    padding: var(--sec) 0;
+  }
+
+  .clients-viewport {
+    overflow-x: auto;
+  }
+
+  .clients-track {
+    transform: none !important;
+  }
+
+  .clients-progress {
+    display: none;
+  }
+
+  /* Moon */
+  .moon-headline {
+    font-size: clamp(2.2rem, 9vw, 3.5rem);
+  }
+
+  /* Process */
+  .process-item {
+    grid-template-columns: 50px 1fr;
+    gap: 20px;
+  }
+
+  .pi-num {
+    font-size: 2rem;
+  }
+
+  /* Footer */
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ==========================================================
+   CUSTOM CURSOR & WHATSAPP
+   ========================================================== */
+body {
+  cursor: none;
+}
+
+a,
+button,
+.svc,
+.client-card,
+[role="button"] {
+  cursor: none;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s var(--ease);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.15s var(--ease);
+  opacity: 0.5;
+}
+
+.whatsapp-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 60px;
+  height: 60px;
+  background: #25D366;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+  z-index: 950;
+  transition: all 0.4s var(--ease-spring);
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.1) rotate(12deg);
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-btn svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Contact Form - Focused */
+.contact-right {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: clamp(30px, 5vw, 60px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+}
+
+html[data-theme="dark"] .contact-right {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.form-field label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  color: var(--fg);
+  display: block;
+}
+
+.form-field input,
+.form-field textarea {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1.5px solid var(--card-border);
+  border-radius: 12px;
+  padding: 18px 22px;
+  color: var(--fg);
+  width: 100%;
+  outline: none;
+  transition: all 0.3s var(--ease);
+}
+
+html[data-theme="dark"] .form-field input,
+html[data-theme="dark"] .form-field textarea {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--accent);
+  background: transparent;
+  box-shadow: 0 0 0 4px var(--accent-dim);
+}
+
+@media (max-width: 720px) {
+  body {
+    cursor: auto;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+
+  .whatsapp-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .whatsapp-btn svg {
+    width: 26px;
+    height: 26px;
+  }
+}

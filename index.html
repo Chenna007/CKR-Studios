@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CKRStudios — Complete Digital Solutions · Dubai</title>
+  <meta name="description"
+    content="CKRStudios delivers world-class digital solutions from Dubai — websites, branding, automation, SEO and marketing." />
+
+  <!--
+    FONTS
+    ✏️ To change fonts: edit the Google Fonts URL below, then update
+       --font-display and --font-body in style.css :root
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+    rel="stylesheet" />
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪄</text></svg>">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- Fixed cinematic background — JS controls its color as you scroll -->
+  <div id="cinematic-bg" aria-hidden="true"></div>
+
+  <!-- Subtle film grain overlay for texture -->
+  <div id="grain" aria-hidden="true"></div>
+
+  <!-- =====================================================
+       NAVBAR
+       ✏️ Edit nav links and logo text here
+       ===================================================== -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+
+      <!-- ✏️ Replace text with <img> tag to use a logo image -->
+      <a href="#hero" class="logo" id="logo">
+        CKR<span class="logo-mark">Studios</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#hero" class="nav-a">Home</a>
+        <a href="#services" class="nav-a">Services</a>
+        <a href="#clients" class="nav-a">Clients</a>
+        <a href="#contact" class="nav-a">Contact</a>
+      </nav>
+
+      <a href="#contact" class="nav-btn" id="navBtn">Start a Project</a>
+
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+
+  <main>
+
+    <!-- =====================================================
+         01. HERO — Morning · White
+         ✏️ Edit headline, subtext, button labels here
+         ===================================================== -->
+    <section class="hero" id="hero">
+      <div class="hero-inner">
+
+        <p class="hero-location reveal-fade" style="--rd:0.1s">
+          <span class="loc-dot"></span>
+          Dubai, UAE
+        </p>
+
+        <h1 class="hero-headline">
+          <span class="hero-line reveal-up" style="--rd:0.2s">Complete</span>
+          <span class="hero-line reveal-up" style="--rd:0.4s">
+            Digital <em>Solutions</em>
+          </span>
+          <span class="hero-line reveal-up" style="--rd:0.6s">for Your Business.</span>
+        </h1>
+
+        <p class="hero-sub reveal-fade" style="--rd:0.75s">
+          Professional Websites, Branding and Digital Systems<br class="hide-mobile" />
+          crafted for modern businesses that demand excellence.
+        </p>
+
+        <div class="hero-btns reveal-fade" style="--rd:0.9s">
+          <!-- ✏️ Change button text / links -->
+          <a href="#contact" class="btn btn-solid">Contact Us</a>
+          <a href="#services" class="btn btn-outline">View Services</a>
+        </div>
+
+      </div>
+
+      <!-- Decorative floating elements -->
+      <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+
+      <!-- Gentle down indicator -->
+      <div class="scroll-hint" aria-hidden="true">
+        <div class="scroll-hint-line"></div>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         02. SERVICES — Transition zone (white → gray)
+         ✏️ Edit service titles and descriptions
+         ===================================================== -->
+    <section class="clients-outer" id="services">
+      <div class="clients-sticky">
+
+        <div class="clients-header">
+          <div class="section-label">What We Build</div>
+          <h2 class="section-title">
+            Services Built<br /><em>for Real Growth</em>
+          </h2>
+        </div>
+
+        <div class="clients-viewport">
+          <div class="clients-track" id="servicesTrack">
+
+            <article class="svc client-card">
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <rect x="3" y="4" width="18" height="13" rx="2" />
+                  <path d="M8 20h8M12 17v3" />
+                </svg>
+              </div>
+              <span class="svc-num">01</span>
+              <h3 class="svc-name">Website Development</h3>
+              <p class="svc-desc">Fast, bespoke websites engineered for performance, conversions and scale.</p>
+            </article>
+
+            <article class="svc client-card">
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+              </div>
+              <span class="svc-num">02</span>
+              <h3 class="svc-name">Branding &amp; Design</h3>
+              <p class="svc-desc">Visual identities and brand systems that command attention and trust.</p>
+            </article>
+
+            <article class="svc client-card">
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path
+                    d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+              </div>
+              <span class="svc-num">03</span>
+              <h3 class="svc-name">Automation Systems</h3>
+              <p class="svc-desc">Intelligent workflows that eliminate manual work and amplify productivity.</p>
+            </article>
+
+            <article class="svc client-card">
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+              </div>
+              <span class="svc-num">04</span>
+              <h3 class="svc-name">Digital Marketing</h3>
+              <p class="svc-desc">Data-led campaigns across all channels that generate real business growth.</p>
+            </article>
+
+            <article class="svc client-card">
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </div>
+              <span class="svc-num">05</span>
+              <h3 class="svc-name">SEO Optimization</h3>
+              <p class="svc-desc">Technical and content SEO that puts you at the top of every relevant search.</p>
+            </article>
+
+            <article class="svc client-card">
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                </svg>
+              </div>
+              <span class="svc-num">06</span>
+              <h3 class="svc-name">Website Maintenance</h3>
+              <p class="svc-desc">Ongoing updates, security and performance monitoring — so nothing breaks.</p>
+            </article>
+
+          </div>
+        </div>
+
+        <div class="clients-progress">
+          <div class="clients-progress-fill" id="servicesProgress"></div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         03. HAPPY CLIENTS — Horizontal scroll
+         The outer wrapper height gives scroll room.
+         JS moves .clients-track horizontally as you scroll.
+         ✏️ Edit client names, reviews, and avatars here
+         ===================================================== -->
+    <section class="clients-outer" id="clients">
+      <div class="clients-sticky">
+
+        <div class="clients-header">
+          <div class="section-label">Happy Clients</div>
+          <h2 class="section-title">
+            Stories From<br /><em>Our Partners</em>
+          </h2>
+        </div>
+
+        <div class="clients-viewport">
+          <div class="clients-track" id="clientsTrack">
+
+            <!-- ✏️ Copy / modify these cards to add or remove clients -->
+
+            <div class="client-card">
+              <div class="client-avatar" data-initials="AK" style="--hue:20"></div>
+              <p class="client-review">"Professional website and great service. CKRStudios transformed our online
+                presence completely."</p>
+              <div class="client-info">
+                <strong class="client-name">Ahmed Khan</strong>
+                <span class="client-role">Restaurant Owner, Dubai</span>
+              </div>
+              <div class="client-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+
+            <div class="client-card">
+              <div class="client-avatar" data-initials="SA" style="--hue:180"></div>
+              <p class="client-review">"Our business looks absolutely amazing online. The design quality is exceptional
+                — far beyond expectations."</p>
+              <div class="client-info">
+                <strong class="client-name">Sarah Ali</strong>
+                <span class="client-role">Business Owner, UAE</span>
+              </div>
+              <div class="client-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+
+            <div class="client-card">
+              <div class="client-avatar" data-initials="MH" style="--hue:260"></div>
+              <p class="client-review">"Very reliable and professional team. Delivered on time and exceeded every
+                expectation we had."</p>
+              <div class="client-info">
+                <strong class="client-name">Mohammed Hassan</strong>
+                <span class="client-role">Real Estate Agent, Dubai</span>
+              </div>
+              <div class="client-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+
+            <div class="client-card">
+              <div class="client-avatar" data-initials="JS" style="--hue:120"></div>
+              <p class="client-review">"Highly recommended. Best digital agency in Dubai. They built our entire platform
+                from scratch."</p>
+              <div class="client-info">
+                <strong class="client-name">John Smith</strong>
+                <span class="client-role">Startup Founder, UAE</span>
+              </div>
+              <div class="client-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+
+            <div class="client-card">
+              <div class="client-avatar" data-initials="FN" style="--hue:300"></div>
+              <p class="client-review">"Exceptional quality, fast delivery and a team that truly understands business
+                goals. Worth every dirham."</p>
+              <div class="client-info">
+                <strong class="client-name">Fatima Noor</strong>
+                <span class="client-role">Restaurant Owner, Dubai</span>
+              </div>
+              <div class="client-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+
+            <div class="client-card">
+              <div class="client-avatar" data-initials="DR" style="--hue:60"></div>
+              <p class="client-review">"Best investment we ever made for our brand. The automation systems alone saved
+                us 20 hours a week."</p>
+              <div class="client-info">
+                <strong class="client-name">Daniel Robert</strong>
+                <span class="client-role">Business Owner, UAE</span>
+              </div>
+              <div class="client-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="clients-progress">
+          <div class="clients-progress-fill" id="clientsProgress"></div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         04. MOON SECTION — The Night · Deep Black
+         The cinematic centrepiece of the page
+         ===================================================== -->
+    <section class="moon-section" id="moon">
+      <div class="moon-scene">
+
+        <!-- Stars (JS populates these) -->
+        <div class="stars" id="stars" aria-hidden="true"></div>
+
+        <!-- The Moon -->
+        <div class="moon" id="moon-orb" aria-hidden="true">
+          <div class="moon-core"></div>
+          <div class="moon-glow-ring moon-glow-1"></div>
+          <div class="moon-glow-ring moon-glow-2"></div>
+          <div class="moon-glow-ring moon-glow-3"></div>
+        </div>
+
+        <!-- Moon section text -->
+        <div class="moon-content">
+          <div class="moon-label reveal-fade">Crafted in Dubai</div>
+          <h2 class="moon-headline reveal-up">
+            Where Precision<br /><em>Meets Vision</em>
+          </h2>
+          <p class="moon-sub reveal-fade">
+            We work in the hours when others sleep — obsessing over<br class="hide-mobile" />
+            every pixel, every word, every interaction.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         05. PROCESS — Transition out of dark
+         ✏️ Edit step titles and descriptions
+         ===================================================== -->
+    <section class="section process" id="process">
+      <div class="container">
+
+        <div class="section-label reveal-fade">How We Work</div>
+        <h2 class="section-title reveal-up">
+          Five Steps to<br /><em>Your Launch</em>
+        </h2>
+
+        <div class="process-list">
+
+          <div class="process-item reveal-up" style="--rd:0s">
+            <div class="pi-num">01</div>
+            <div class="pi-content">
+              <h4>Consultation</h4>
+              <p>We understand your business, goals and audience with absolute clarity.</p>
+            </div>
+          </div>
+
+          <div class="process-item reveal-up" style="--rd:0.1s">
+            <div class="pi-num">02</div>
+            <div class="pi-content">
+              <h4>Planning</h4>
+              <p>We define scope, structure and a precise delivery roadmap.</p>
+            </div>
+          </div>
+
+          <div class="process-item reveal-up" style="--rd:0.2s">
+            <div class="pi-num">03</div>
+            <div class="pi-content">
+              <h4>Development</h4>
+              <p>We build with precision — clean code, stunning design, rigorous QA.</p>
+            </div>
+          </div>
+
+          <div class="process-item reveal-up" style="--rd:0.3s">
+            <div class="pi-num">04</div>
+            <div class="pi-content">
+              <h4>Launch</h4>
+              <p>We deploy, configure and handle every detail before going live.</p>
+            </div>
+          </div>
+
+          <div class="process-item reveal-up" style="--rd:0.4s">
+            <div class="pi-num">05</div>
+            <div class="pi-content">
+              <h4>Support</h4>
+              <p>Ongoing care, performance monitoring and updates indefinitely.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         06. CONTACT — Sunrise · Back to White
+         ✏️ Edit location, Instagram link, form fields
+         ===================================================== -->
+    <section class="section contact" id="contact">
+      <div class="container">
+
+        <div class="contact-grid">
+
+          <div class="contact-left">
+            <div class="section-label reveal-fade">Get In Touch</div>
+            <h2 class="section-title reveal-up">
+              Let's Build<br /><em>Something Extraordinary</em>
+            </h2>
+            <p class="contact-sub reveal-fade">
+              Tell us about your project. We'll get back within 24 hours with a free, detailed quote.
+            </p>
+
+            <div class="contact-details">
+
+              <div class="contact-detail reveal-fade" style="--rd:0.1s">
+                <div class="cd-dot"></div>
+                <div>
+                  <span class="cd-label">Location</span>
+                  <!-- ✏️ Change your location here -->
+                  <span class="cd-value">Dubai, UAE</span>
+                </div>
+              </div>
+
+              <div class="contact-detail reveal-fade" style="--rd:0.2s">
+                <div class="cd-dot"></div>
+                <div>
+                  <span class="cd-label">Instagram</span>
+                  <!-- ✏️ Change your Instagram URL here -->
+                  <a href="https://www.instagram.com/ckr_studios/" class="cd-value cd-link" target="_blank"
+                    rel="noopener">@ckr_studios</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="contact-right reveal-up" style="--rd:0.15s">
+            <form id="contactForm" class="form" novalidate>
+              <input type="hidden" name="access_key" value="2cb86831-3e45-48ef-a61e-0ca1c02fbcc7">
+
+              <div class="form-field">
+                <label for="fname">Your Name</label>
+                <input type="text" id="fname" name="name" placeholder="Mark Zuckerberg" required />
+              </div>
+
+              <div class="form-field">
+                <label for="femail">Email Address</label>
+                <input type="email" id="femail" name="email" placeholder="markzuck10@company.com" required />
+              </div>
+
+              <div class="form-field">
+                <label for="fphone">Phone Number <small>(WhatsApp Number)</small></label>
+                <input type="tel" id="fphone" name="phone" placeholder="+971 50 123 4567" required />
+              </div>
+
+              <div class="form-field">
+                <label for="fmsg">Your Message</label>
+                <textarea id="fmsg" name="message" rows="5" placeholder="Describe your project, goals and timeline…"
+                  required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-solid" id="submitBtn">
+                <span class="btn-txt">Send Message</span>
+                <span class="btn-arr">→</span>
+                <span class="btn-spin" aria-hidden="true"></span>
+              </button>
+
+              <p class="form-note">We reply within 24 hours. No spam.</p>
+
+            </form>
+
+            <div class="form-success" id="formSuccess" hidden>
+              <div class="success-mark">✓</div>
+              <h4>Message Sent</h4>
+              <p>We'll be in touch within 24 hours.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+       ✏️ Edit footer links and copyright text
+       ===================================================== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#hero" class="logo">CKR<span class="logo-mark">Studios</span></a>
+          <p>Complete Digital Solutions<br />for Modern Businesses.</p>
+        </div>
+
+        <div class="footer-links">
+          <div class="fc">
+            <h5>Company</h5>
+            <a href="#hero">Home</a>
+            <a href="#services">Services</a>
+            <a href="#clients">Clients</a>
+            <a href="#contact">Contact</a>
+          </div>
+          <div class="fc">
+            <h5>Services</h5>
+            <a href="#services">Web Dev</a>
+            <a href="#services">Branding</a>
+            <a href="#services">SEO</a>
+            <a href="#services">Marketing</a>
+          </div>
+          <div class="fc">
+            <h5>Connect</h5>
+            <!-- ✏️ Update social links -->
+            <a href="mailto:ckrstudiodesign@gmail.com">ckrstudiodesign@gmail.com</a>
+            <a href="https://www.instagram.com/ckr_studios/" target="_blank" rel="noopener">Instagram</a>
+            <a href="#contact">Get a Quote</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 CKRStudios. All Rights Reserved.</p>
+        <p>Created by ckrstudios · Dubai, UAE</p>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/971521046611" class="whatsapp-btn" target="_blank" rel="noopener"
+    aria-label="Contact us on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path
+        d="M12.031 6.172c-2.32 0-4.512 0.905-6.16 2.553a8.693 8.693 0 0 0-2.548 6.13c0 1.948.674 3.843 1.901 5.374l-1.203 4.388 4.511-1.18c1.589.865 3.305 1.321 5.063 1.321h.001c4.793 0 8.691-3.897 8.691-8.691 0-2.318-.902-4.5-2.548-6.146a8.676 8.676 0 0 0-6.223-2.548h-.001zm0 1.517c1.921 0 3.725.748 5.084 2.106 1.358 1.358 2.106 3.161 2.106 5.068 0 3.955-3.218 7.174-7.173 7.174h-.001a7.124 7.124 0 0 1-3.691-1.025l-.265-.157-2.742.718.731-2.668-.173-.275a7.125 7.125 0 0 1-1.065-3.767c0-1.906.742-3.709 2.101-5.068a7.151 7.151 0 0 1 5.083-2.106zM9.444 9.19c-.202 0-.332.1-.476.26l-.47.514c-.161.173-.55.602-.55 1.47 0 .866.63 1.701.719 1.821s1.218 1.944 3.018 2.656c1.8.712 1.8.475 2.125.445s1.04-.425 1.188-.838c.148-.413.148-.767.104-.838s-.162-.12-.347-.21c-.185-.09-1.09-.538-1.259-.599s-.295-.09-.418.105-.487.599-.596.72-.218.136-.403.045c-.185-.09-.78-.287-1.485-.916-.547-.487-.916-1.088-1.023-1.272s-.011-.284.08-.374c.081-.081.185-.21.278-.315.093-.105.124-.18.185-.3s.031-.225-.015-.315c-.046-.09-.418-1.005-.572-1.373-.15-.357-.31-.307-.427-.313l-.337-.006z" />
+    </svg>
+  </a>
+
+  <!-- Custom Cursor Elements -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
