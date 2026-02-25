@@ -278,27 +278,6 @@ function initHorizontalScroll() {
   });
 }
 
-function initMoonEffect() {
-  const moon = document.getElementById('moon');
-  const moonCore = document.querySelector('.moon-core');
-  if (!moon || !moonCore) return;
-
-  function update() {
-    const rect = moon.getBoundingClientRect();
-    const viewH = window.innerHeight;
-
-    // Calculate how far through the moon section we are
-    // 0 = just entered bottom, 1 = leaving top
-    const pct = invLerp(viewH, -rect.height, rect.top);
-
-    // Map pct to moon phase (100% = full, 50% = half)
-    const shadowX = mapRange(pct, 0, 0.6, 100, 50);
-    moonCore.style.setProperty('--shadow-x', `${shadowX}%`);
-  }
-
-  window.addEventListener('scroll', update, { passive: true });
-  update();
-}
 
 
 /* ==========================================================
@@ -521,7 +500,6 @@ function initCursor() {
     initNavbar();
     initMobileMenu();
     initStars();
-    initMoonEffect();
     initHorizontalScroll();
     initScrollReveal();
     initCounters();
